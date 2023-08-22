@@ -14,9 +14,9 @@ import (
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
-const webPort = "80"
+const webPort = "8081"
 
-var counts int64
+var count int64
 
 type Config struct {
 	DB *sql.DB
@@ -24,23 +24,26 @@ type Config struct {
 }
 
 func main()  {
-	log.Println("Starting authentication service")
-
+	
 	// TODO connect to DB
 	conn := connectToDB()
 	if conn == nil {
 		log.Panic("Can't connect to Postgres")
 	}
-
+	
 	// set up config
-	app := Config{}
-
+	app := Config{
+		DB: conn,
+		Models: data.New(conn),
+	}
+	
 	// define http server
 	srv := &http.Server{
 		Addr: fmt.Sprintf(":%s", webPort),
 		Handler: app.routes(),
 	}
-
+	
+	log.Println("Starting authentication service")
 	// start the server
 	err := srv.ListenAndServe()
 	if err != nil {
@@ -48,8 +51,8 @@ func main()  {
 	}
 }
 
-func openDB(dsn string) (*sql.DB, error) {
-	db, err := sql.Open("pgx", dsn)
+func openDB(dns string) (*sql.DB, error) {
+	db, err := sql.Open("pgx", dns)
 	if err != nil {
 		return nil, err
 	}
@@ -62,25 +65,32 @@ func openDB(dsn string) (*sql.DB, error) {
 }
 
 func connectToDB() *sql.DB {
-	dsn := os.Getenv("DSN")
+	dns := os.Getenv("DNS")
+	// host := "postgres-srv"
+	// port := 5433
+	// user := os.Getenv("POSTGRES_USER")
+	// password := os.Getenv("POSTGRES_PASSWORD")
+	// dbname := os.Getenv("POSTGRES_DB")
+	// dns := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable timezone=UTC connect_timeout=5", host, port, user, password, dbname)
 
 	for {
-		connection, err := openDB(dsn)
+		connection, err := openDB(dns)
+		time.Sleep(1 * time.Minute)
 		if err != nil {
-			log.Println("Postgres not yet ready...")
-			counts++
+			log.Println(err)
+			log.Panic("Postgres not yet ready...")
+			count++
 		} else {
-			log.Println("Connected to Postgres")
+			log.Println("Connected to Postgres!")
 			return connection
 		}
 
-		if counts > 10 {
+		if count > 15 {
 			log.Println(err)
 			return nil
 		}
-
-		log.Println("Backing off two seconds....")
-		time.Sleep(time.Second * 2)
+		log.Println("Backing off for two seconds...")
+		time.Sleep(2 * time.Second)
 		continue
 	}
 }
