@@ -15,7 +15,7 @@ import (
 const (
 	webPort = "80"
 	rpcPort = "5001"
-	mongoURL = "mongo://mongo:27017"
+	mongoURL = "mongodb://mongo:27017"
 	gRpcPort = "50001"
 )
 
@@ -51,7 +51,7 @@ func main()  {
 	// serve web server
 	// go app.serve()
 	srv := &http.Server{
-		Addr: fmt.Sprintf("%s", webPort),
+		Addr: fmt.Sprintf(":%s", webPort),
 		Handler: app.routes(),
 	}
 
