@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
+	// "time"
 
 	"github.com/fayob/go_micro/auth_service/data"
 	_ "github.com/jackc/pgconn"
@@ -14,9 +14,9 @@ import (
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
-const webPort = "8081"
+const webPort = "80"
 
-var count int64
+// var count int64
 
 type Config struct {
 	DB *sql.DB
@@ -66,31 +66,26 @@ func openDB(dns string) (*sql.DB, error) {
 
 func connectToDB() *sql.DB {
 	dns := os.Getenv("DNS")
-	// host := "postgres-srv"
-	// port := 5433
-	// user := os.Getenv("POSTGRES_USER")
-	// password := os.Getenv("POSTGRES_PASSWORD")
-	// dbname := os.Getenv("POSTGRES_DB")
-	// dns := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable timezone=UTC connect_timeout=5", host, port, user, password, dbname)
-
-	for {
+	
+	// for {
 		connection, err := openDB(dns)
-		time.Sleep(1 * time.Minute)
+		// time.Sleep(1 * time.Minute)
 		if err != nil {
 			log.Println(err)
 			log.Panic("Postgres not yet ready...")
-			count++
-		} else {
+			// count++
+		} 
+		// else {
 			log.Println("Connected to Postgres!")
 			return connection
-		}
+		// }
 
-		if count > 15 {
-			log.Println(err)
-			return nil
-		}
-		log.Println("Backing off for two seconds...")
-		time.Sleep(2 * time.Second)
-		continue
-	}
+		// if count > 15 {
+		// 	log.Println(err)
+		// 	return nil
+		// }
+		// log.Println("Backing off for two seconds...")
+		// time.Sleep(2 * time.Second)
+		// continue
+	// }
 }
