@@ -27,6 +27,8 @@ services:
       context: ./../authentication_service
       dockerfile: ./../authentication_service/authentication-service.dockerfile
     restart: always
+    depends_on:
+      - postgres-db
     ports:
       - "8081:80"
     deploy:
@@ -34,6 +36,14 @@ services:
       replicas: 1
     environment:
       DNS: "host=postgres-db port=5432 user=postgres password=password dbname=users sslmode=disable timezone=UTC connect_timeout=5"
+
+  listener-service:
+    build:
+      context: ./../listener_service
+      dockerfile: ./../listener_service/Dockerfile
+    deploy:
+      mode: replicated
+      replicas: 1
 
   mail-service:
     build: 
