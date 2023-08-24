@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	// "errors"
 	"net/http"
 )
 
@@ -22,11 +21,6 @@ func (app *Config) readJSON(w http.ResponseWriter, r *http.Request, data any) er
 	if err != nil {
 		return err
 	}
-
-	// err = dec.Decode(&struct{}{})
-	// if err != nil {
-	// 	return errors.New("body must have only a single JSON value")
-	// }
 
 	return nil
 }
