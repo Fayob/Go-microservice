@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	// "time"
 
 	"github.com/fayob/go_micro/auth_service/data"
 	_ "github.com/jackc/pgconn"
@@ -15,8 +14,6 @@ import (
 )
 
 const webPort = "80"
-
-// var count int64
 
 type Config struct {
 	DB *sql.DB
@@ -67,25 +64,11 @@ func openDB(dns string) (*sql.DB, error) {
 func connectToDB() *sql.DB {
 	dns := os.Getenv("DNS")
 	
-	// for {
-		connection, err := openDB(dns)
-		// time.Sleep(1 * time.Minute)
-		if err != nil {
-			log.Println(err)
-			log.Panic("Postgres not yet ready...")
-			// count++
-		} 
-		// else {
-			log.Println("Connected to Postgres!")
-			return connection
-		// }
-
-		// if count > 15 {
-		// 	log.Println(err)
-		// 	return nil
-		// }
-		// log.Println("Backing off for two seconds...")
-		// time.Sleep(2 * time.Second)
-		// continue
-	// }
+	connection, err := openDB(dns)
+	if err != nil {
+		log.Println(err)
+		log.Panic("Postgres not yet ready...")
+	}
+	log.Println("Connected to Postgres!")
+	return connection
 }
