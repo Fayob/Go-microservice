@@ -49,7 +49,6 @@ func main()  {
 	}
 
 	// serve web server
-	// go app.serve()
 	srv := &http.Server{
 		Addr: fmt.Sprintf(":%s", webPort),
 		Handler: app.routes(),
@@ -60,18 +59,6 @@ func main()  {
 		log.Panic(err)
 	}
 }
-
-// func (app *Config) serve() {
-// 	srv := &http.Server{
-// 		Addr: fmt.Sprintf("%s", webPort),
-// 		Handler: app.routes(),
-// 	}
-
-// 	err := srv.ListenAndServe()
-// 	if err != nil {
-// 		log.Panic(err)
-// 	}
-// }
 
 func connectToMongo() (*mongo.Client, error) {
 	// create the connection options
