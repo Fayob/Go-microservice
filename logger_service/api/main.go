@@ -57,6 +57,8 @@ func main()  {
 	}
 	go app.rpcListen()
 
+	go app.gRPCListen()
+
 	// serve web server
 	srv := &http.Server{
 		Addr: fmt.Sprintf(":%s", webPort),
