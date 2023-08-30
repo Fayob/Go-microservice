@@ -41,6 +41,7 @@ services:
     build:
       context: ./../listener_service
       dockerfile: ./../listener_service/Dockerfile
+    restart: always
     deploy:
       mode: replicated
       replicas: 1
