@@ -58,7 +58,7 @@ build_mail:
 ## build_front: builds the frone end binary
 build_front:
 	@echo "Building front end binary..."
-	cd ../front_end && env CGO_ENABLED=0 go build -o ${FRONT_END_BINARY} ./cmd/web
+	cd ../front_end && env CGO_ENABLED=0 go build -o ${FRONT_END_BINARY} .
 	@echo "Done!"
 
 ## start: starts the front end
