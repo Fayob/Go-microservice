@@ -15,6 +15,11 @@ type Consumer struct {
 	queueName string
 }
 
+type Payload struct {
+	Name string `json:"name"`
+	Data string `json:"data"`
+}
+
 func NewConsumer(conn *ampq.Connection) (Consumer, error) {
 	consumer := Consumer{
 		conn: conn,
@@ -37,10 +42,6 @@ func (consumer *Consumer) setup() error {
 	return declareExchange(channel)
 }
 
-type Payload struct {
-	Name string `json:"name"`
-	Data string `json:"data"`
-}
 
 func (consumer *Consumer) Listen(topics []string) error {
 	ch, err := consumer.conn.Channel()
